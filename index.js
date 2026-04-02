@@ -1,8 +1,8 @@
-const express = require("express");
-const app = express();
-const PORT = 3000;
+// const express = require("express");
+// const app = express();
+// const PORT = 3000;
 
-app.use(express.json());
+// app.use(express.json());
 
 // function userMiddleware(req, res, next) {
 //     const username = req.headers.username;
@@ -42,18 +42,49 @@ app.use(express.json());
 
 
 
-app.post("/kidney-checkup", (req, res) => {
-    const kidneys = req.body.kidneys;
-    const kidneyLength = kidneys.length;
+// app.post("/kidney-checkup", (req, res) => {
+//     const kidneys = req.body.kidneys;
+//     const kidneyLength = kidneys.length;
 
-    res.send(`You have ${kidneyLength} kidneys`);
+//     res.send(`You have ${kidneyLength} kidneys`);
+// })
+
+// // Global Catches
+// app.use(function (err, req, res, next) {
+//     res.json({
+//         msg: "Sorry... something is up with our server."
+//     })
+// })
+
+const express = require("express");
+const zod = require("zod");
+const app = express();
+const PORT = 3000;
+
+// const schema = zod.array(zod.number());
+
+const schema = zod.object({
+    email: zod.string(), //email=>string
+    password: zod.string(),  //passowrd => string => 8 character
+    country: zod.literal("IN").or(zod.literal("US")),  //country => "IN", "US"
+    kidneys: zod.array(zod.number()),
 })
 
-// Global Catches
-app.use(function (err, req, res, next) {
-    res.json({
-        msg: "Sorry... something is up with our server."
-    })
+app.use(express.json());
+
+app.post("/health-checkup", (req, res) => {
+    const kidneys = req.body.kidneys;
+    const response = schema.safeParse(kidneys);
+    if (!response.success) {
+        res.status(411).json({
+            msg: "input is invalid"
+        })
+    } else {
+        res.send({
+            response
+        })
+    }
+
 })
 
 app.listen(PORT, () => {
