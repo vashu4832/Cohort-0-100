@@ -1,80 +1,48 @@
 const express = require("express");
 const app = express();
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 const jwtPassword = "123456";
 
 app.use(express.json());
-const ALL_USERS = [
-    {
-        username: "vashu4832@gmail.com",
-        password: "ashu2003",
-        name: "Ashutosh Vishwakarma"
-    },
-    {
-        username: "navin23@gmail.com",
-        password: "navin2003",
-        name: "Navinn Sharma"
-    },
-    {
-        username: "alok420@gmail.com",
-        password: "alok2003",
-        name: "Alok Garadiya"
-    },
-    {
-        username: "ayush@gmail.com",
-        password: "ayush2003",
-        name: "Ayush Mishra"
-    }
-];
 
-function userExists(username, password){
-    // Write logic to return true or false if this user exists
-    // in ALL_USER array
-    let userExists = false;
-    for(let i=0;i<ALL_USERS.length;i++){
-        if(ALL_USERS[i].username == username && ALL_USERS[i].password == password){
-            userExists = true;
-        } 
-    } 
-    return userExists;
-}
+mongoose.connect("mongodb://127.0.0.1:27017/test")
+    .then((res) => {
+        console.log("Connected to DB.")
+    })
+    .catch((err) => {
+        console.log(err);
+    })
 
-app.post("/signin", (req, res) => {
+const User = mongoose.model("User",{
+    email: String,
+    password: String,
+    name: String
+});
+
+app.post("/signin", async(req, res) => {
     const username = req.body.username;
     const password = req.body.password;
+    const name = req.body.name;
 
-    if(!userExists(username, password)){
-        return res.status(403).json({
-            msg: "User does not exists in our memory db"
-        })
+    const existingUser = await User.findOne({email: username});
+
+    if(existingUser){
+        return res.status(400).send("Username already exists");
     }
 
-    let token = jwt.sign({username: username}, jwtPassword);
-    return res.json({
-        token
+    const newUser = new User({
+        email: username,
+        password: password,
+        name: name
     })
-});
 
-app.get("/users", (req, res) => {
-    const token = req.headers.authorization;
-    try{
-            const decode = jwt.verify(token, jwtPassword);
-            const username = decode.username;
-            // return a list of user other than this username
-            res.json({
-                users: ALL_USERS.filter(function(value) {
-                    if(value.username == username){
-                        return false
-                    } else {
-                        return true
-                    }
-                })
-            })
-    } catch (err) {
-        return res.status(403).json({
-            msg: "Invalid token"
-        })
-    }
-});
+    const response = await newUser.save();
+
+    res.json({
+        msg: "User created successfully"
+    })
+
+})
 
 app.listen(3000);
