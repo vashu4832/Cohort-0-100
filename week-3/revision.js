@@ -12,13 +12,43 @@ function isEnoughAgeMiddleware(req, res, next) {
     }
 }
 
-app.get("/ride1",isEnoughAgeMiddleware, (req, res) => {
+// Count number of incoming request to the server
+let reqCount = 0;
+app.use(function (req, res, next) {
+    reqCount++;
+    next();
+    console.log(reqCount);
+})
+
+
+// Create rate limiter middleware for user not send more than 5 req per minute
+let numberOfRequestForUser = {};
+setInterval(() => {
+    numberOfRequestForUser = {};
+}, 1000);
+
+app.use(function (req, res, next) {
+    const userId = req.headers["user-id"];
+    if(numberOfRequestForUser[userId]){
+        numberOfRequestForUser[userId] = numberOfRequestForUser[userId]+1;
+        if(numberOfRequestForUser[userId] > 5){
+            res.status(404).send("No entry")
+        } else {
+            next();
+        }
+    } else {
+        numberOfRequestForUser[userId] = 1;
+        next();
+    }
+})
+
+app.get("/ride1", isEnoughAgeMiddleware, (req, res) => {
     res.json({
         msg: "You have successfully riden the ride1"
     })
 })
 
-app.get("/ride2",isEnoughAgeMiddleware, (req, res) => {
+app.get("/ride2", isEnoughAgeMiddleware, (req, res) => {
     res.json({
         msg: "You have successfully riden the ride2"
     })
