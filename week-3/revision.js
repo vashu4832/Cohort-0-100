@@ -1,24 +1,27 @@
 const express = require("express");
 const app = express();
 
-function isEnoughAge(age){
-    if(age>=14){
-        return true;
+function isEnoughAgeMiddleware(req, res, next) {
+    const age = req.query.age;
+    if (age >= 14) {
+        next();
     } else {
-        return false;
+        res.status(411).json({
+            msg: "User not eligible yet for ride"
+        })
     }
 }
 
-app.get("/ride1", (req, res) => {
-    if(isEnoughAge(req.query.age)){
-        res.json({
-            msg: "You have successfully riden the ride1"
-        })
-    } else {
-        res.status(503).json({
-            msg: "Sorry you are not eligible"
-        })
-    }
+app.get("/ride1",isEnoughAgeMiddleware, (req, res) => {
+    res.json({
+        msg: "You have successfully riden the ride1"
+    })
+})
+
+app.get("/ride2",isEnoughAgeMiddleware, (req, res) => {
+    res.json({
+        msg: "You have successfully riden the ride2"
+    })
 })
 
 app.listen(3000);
