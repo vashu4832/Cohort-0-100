@@ -58,3 +58,6 @@ const token = jwt.sign(value, "secret"); // This token can generate using this s
 console.log(token);
 
 
+// This is how we verify the token 
+const verifiedValue = jwt.verify(token, "secret");
+console.log(verifiedValue);
