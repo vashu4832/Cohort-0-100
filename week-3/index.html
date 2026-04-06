@@ -4,34 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fetch API</title>
-    <!-- <script>
-        window.onload = () => {
-            const heading = document.createElement("h1");
-            const headingText = document.createTextNode("Big Head!");
-            heading.appendChild(headingText);
-            document.body.appendChild(heading);
-        }; 
-    </script> -->
+    <style>
+        .democlass{
+            color: red;
+        }
+    </style>
 </head>
 <body>
-   <h1>The Document Object</h1>
-   <h2>The querySelectorAll() method</h2>
+   <h1 id="myH1">The Element Object</h1>
+   <h2>The setAttribute() methods</h2>
 
-   <p>Change the background color of every p element where the parent is a div element.</p>
+   <p>Click "Add Class" to add a class attribute to the h1 element</p>
 
-   <div>
-        <h3>H3 Element</h3>
-        <p>I am a p element. my parent is div element.</p>
-   </div>
-   <div>
-        <h3>H3 Element</h3>
-        <p>I am a p element. my parent is div element.</p>
-   </div>
+   <button onclick="myFunction()">Add Class</button>
+   
     
     <script>
-        const nodeList = document.querySelectorAll("div > p");
-        for(let i=0;i<=nodeList.length; i++){
-            nodeList[i].style.backgroundColor = "green";
+        function myFunction(){
+            document.getElementById("myH1").setAttribute("class", "democlass");
         }
     </script>
 </body>
