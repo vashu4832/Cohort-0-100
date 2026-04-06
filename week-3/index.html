@@ -4,14 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fetch API</title>
+    <!-- <script>
+        window.onload = () => {
+            const heading = document.createElement("h1");
+            const headingText = document.createTextNode("Big Head!");
+            heading.appendChild(headingText);
+            document.body.appendChild(heading);
+        }; 
+    </script> -->
 </head>
 <body>
-    <button onclick="getAnimalData()">Get Animal Data</button>
+    <form id="LoginForm" action="/action_page.php">
+        First Name: <input type="text" name="fname" value="Donald"/> <br/>
+        Last Name: <input type="text" name="lname" value="Duck" /> <br/>
+        <input type="submit" value="Submit" >
+    </form>
+
+    <p>Click the "Try it" button to display the number of elements in the form</p>
+    <button onclick="myFunction()">Try It</button>
+    <p id="displaySpace"></p>
+    
     <script>
-        async function getAnimalData(){
-            const res = await fetch("https://fakerapi.it/api/v1/persons");
-            const finalData = await res.json();
-            console.log(finalData);
+        function myFunction(){
+            let x = document.getElementById("LoginForm").elements.length;
+            let y = document.getElementById("LoginForm").elements[0].value;
+            document.getElementById("displaySpace").innerHTML = "Found "+x +
+            " element in the form."+ " first name entered is: "+ y;
         }
     </script>
 </body>
