@@ -26,11 +26,7 @@ function kidneyMiddleware(req, res, next){
 }
 
 app.get("/health-checkup", userMiddleware, kidneyMiddleware, (req,res) => {
-   
-    
-
     res.send("Your heart is healthy");
-
 })
 
 app.listen(PORT, () => {
