@@ -47,20 +47,20 @@
 
 // app.listen(3000);
 
-// const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 // // Generate a JWT
-// const value = {
-//     name: "Ashutosh",
-//     accountNumber: 123456789
-// }
-// const token = jwt.sign(value, "secret"); // This token can generate using this secret, and hence this token can only be verified using this secret
-// console.log(token);
+const value = {
+    name: "Ashutosh",
+    accountNumber: 123456789
+}
+const token = jwt.sign(value, "secret"); // This token can generate using this secret, and hence this token can only be verified using this secret
+console.log(token);
 
 
 // // This is how we verify the token
-// const verifiedValue = jwt.verify(token, "secret");
-// console.log(verifiedValue);
+const verifiedValue = jwt.verify(token, "secret");
+console.log(verifiedValue);
 
 // Q1. Write a function that takes in a username and password and returns a JWT token with the username encoded. Should return null if the username is not a valid email or if the password is less than 6 characters. Try using Zod library here.
 const z = require("zod");
