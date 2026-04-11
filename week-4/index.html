@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intrest Calculator</title>
+</head>
+<body>
+
+    <input type="text" placeholder="first input" id="firstNumber"/><br/><br/>
+
+    <input type="text" placeholder="second input" id="secondNumber"/><br/><br/> 
+    <button onclick="populatePara()">Calculate Sum</button>
+    <p id="finalSum"></p>
+    <script>
+        function populatePara(){
+            const a = document.getElementById("firstNumber").value;
+            const b = document.getElementById("secondNumber").value;
+            let res = document.getElementById("finalSum");
+            res.innerHTML = parseInt(a)+ parseInt(b);        
+        }
+        
+    </script>
+</body>
+</html>
