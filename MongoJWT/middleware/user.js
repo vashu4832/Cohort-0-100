@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 const {JWT_SECRET} = require("../config");
+
 function userMiddleware(req, res, next) {
     // Implement admin auth logic
-    // You need to check the headers and validate the admin from the admin DB.
     const token = req.headers.authorization;
     
     const words = token.split(" ");
