@@ -21,7 +21,7 @@ router.post("/signup", async (req, res) => {
 })
 
 router.post("/signin", async (req, res) => {
-    // Implement admin signup llogic
+    // Implement admin signin logic
     const username = req.body.username;
     const password = req.body.password;
 
