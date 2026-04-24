@@ -3,7 +3,9 @@ const express = require("express");
 const app = express();
 const { createTodo, updateTodo } = require("./types");
 const { Todo } = require("./db");
+const cors = require("cors");
 
+app.use(cors());
 app.use(express.json());
 
 app.post("/todo", async (req, res) => {
@@ -28,7 +30,7 @@ app.post("/todo", async (req, res) => {
     })
 })
 
-app.get("/todos", async (req, res) => {
+app.get("/todo", async (req, res) => {
     const result = await Todo.find({})
     res.json({
         result,
@@ -45,10 +47,10 @@ app.put("/completed", async (req, res) => {
         return;
     }
 
-    await Todo.updateOne({
+    await Todo.update({
         _id: req.body.id,
     }, {
-        $set: { completed: true } 
+        completed: true   
     })
 
     res.json({
