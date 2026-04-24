@@ -2,36 +2,58 @@
 const express = require("express");
 const app = express();
 const { createTodo, updateTodo } = require("./types");
+const { Todo } = require("./db");
 
 app.use(express.json());
 
-app.post("/todo", (req, res) => {
+app.post("/todo", async (req, res) => {
     const createPayload = req.body;
     const parsedPayload = createTodo.safeParse(createPayload);
-    if(!parsedPayload.success) {
+    if (!parsedPayload.success) {
         res.status(411).json({
             msg: "You sent the wrong input"
         })
         return;
     }
-
     // put it in mongoDb
+    const todo = await Todo.create({
+        title: createPayload.title,
+        description: createPayload.description,
+        completed: false,
+    })
 
+    res.json({
+        msg: "Todo created",
+        todo
+    })
 })
 
-app.get("/todos", (req, res) => {
-
+app.get("/todos", async (req, res) => {
+    const result = await Todo.find({})
+    res.json({
+        result,
+    })
 })
 
-app.put("/completed", (req, res) => {
+app.put("/completed", async (req, res) => {
     const updatePayload = req.body;
-    const parsedPayload = updateTodo.safeParse(updatePayload );
-    if(!parsedPayload.success){
+    const parsedPayload = updateTodo.safeParse(updatePayload);
+    if (!parsedPayload.success) {
         res.status(411).json({
             msg: "You send the wrong id."
         })
-        return;  
+        return;
     }
+
+    await Todo.updateOne({
+        _id: req.body.id,
+    }, {
+        $set: { completed: true } 
+    })
+
+    res.json({
+        msg: "Todo marked as completed"
+    })
 })
 
 app.listen(3000, () => {
