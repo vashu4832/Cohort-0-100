@@ -1,6 +1,8 @@
 import { useState, memo } from "react";
 import Todo from "./Todo";
 
+let counter = 4;
+
 function App() {
   const [todos, setTodos] = useState([
     {
@@ -24,9 +26,9 @@ function App() {
     setTodos([
       ...todos,
       {
-        id: 4,
-        title: "Demo",
-        desc: "demo2",
+        id: counter++,
+        title: Math.random(),
+        desc: Math.floor(Math.random() * 100),
       },
     ]);
   }
@@ -35,7 +37,7 @@ function App() {
     <>
       <button onClick={addTodo}>Add ToDo</button>
       {todos.map((todo) => (
-        <Todo title={todo.title} desc={todo.desc} />
+        <Todo key={todo.id} title={todo.title} desc={todo.desc} />
       ))}
     </>
   );
