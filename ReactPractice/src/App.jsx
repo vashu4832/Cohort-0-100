@@ -1,29 +1,44 @@
-import { useState, memo } from "react"
-
+import { useState, memo } from "react";
+import Todo from "./Todo";
 
 function App() {
-  const [title, setTitle] = useState("My name is Ashutosh")
+  const [todos, setTodos] = useState([
+    {
+      id: 1,
+      title: "Wake up",
+      desc: "Wake up at 6 AM",
+    },
+    {
+      id: 2,
+      title: "Go for GYM",
+      desc: "Go for GYM at 6:30 AM ",
+    },
+    {
+      id: 3,
+      title: "Get Ready",
+      desc: "Had breakfast",
+    },
+  ]);
 
-  function handleClick(){
-    setTitle("My name is "+Math.random())
+  function addTodo() {
+    setTodos([
+      ...todos,
+      {
+        id: 4,
+        title: "Demo",
+        desc: "demo2",
+      },
+    ]);
   }
 
   return (
     <>
-    <button onClick={handleClick}>Click me to change the title</button>
-     <Header title={title}/>
-     <Header title="My name is Raman"/>
-     <Header title="My name is Chaman"/>
-     <Header title="My name is Raman"/>
+      <button onClick={addTodo}>Add ToDo</button>
+      {todos.map((todo) => (
+        <Todo title={todo.title} desc={todo.desc} />
+      ))}
     </>
-  )
+  );
 }
 
-const Header = memo(function Header({title}){
-  console.log("Rendered")
-  return(
-    <h1>{title}</h1>  
-  )
-})
-
-export default App
+export default App;
