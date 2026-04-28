@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, memo } from "react"
 
 
 function App() {
@@ -10,32 +10,20 @@ function App() {
 
   return (
     <>
-      <HeaderDown/>
+    <button onClick={handleClick}>Click me to change the title</button>
+     <Header title={title}/>
      <Header title="My name is Raman"/>
+     <Header title="My name is Chaman"/>
      <Header title="My name is Raman"/>
     </>
   )
 }
 
-function HeaderDown(){
-  const [title, setTitle] = useState("My name is Ashutosh")
-
-  function handleClick(){
-    setTitle("My name is "+Math.random())
-  }
-
+const Header = memo(function Header({title}){
+  console.log("Rendered")
   return(
-    <>
-      <button onClick={handleClick}>Click me to change the title</button>
-      <Header title={title}/>
-    </>
+    <h1>{title}</h1>  
   )
-}
-
-function Header({title}){
-  return(
-    <h1>{title}</h1>
-  )
-}
+})
 
 export default App
