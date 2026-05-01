@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-function Todo({title, desc}) {
+function Todo() {
+    const [count, setCount] = useState(0);
     return (
         <div>
-            <h1>{title}</h1>
-            <p>{desc}</p>
+            <p>Count: {count}</p>
+            <button onClick={() => setCount(count+1)}>Increase Counter {count}</button>
         </div>
     )
 }

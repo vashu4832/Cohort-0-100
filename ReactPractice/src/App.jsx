@@ -1,44 +1,45 @@
-import { useState, memo } from "react";
-import Todo from "./Todo";
-
-let counter = 4;
+import { useState, memo, useEffect, useMemo } from "react";
 
 function App() {
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      title: "Wake up",
-      desc: "Wake up at 6 AM",
-    },
-    {
-      id: 2,
-      title: "Go for GYM",
-      desc: "Go for GYM at 6:30 AM ",
-    },
-    {
-      id: 3,
-      title: "Get Ready",
-      desc: "Had breakfast",
-    },
-  ]);
 
-  function addTodo() {
-    setTodos([
-      ...todos,
-      {
-        id: counter++,
-        title: Math.random(),
-        desc: Math.floor(Math.random() * 100),
-      },
-    ]);
-  }
+  const [exchange1Data, setExchange1Data] = useState({});
+  const [exchange2Data, setExchange2Data] = useState({});
+  const [bankData, setBankData] = useState({});
+
+
+  useEffect(() => {
+    // Some operations to get the data
+    setExchange1Data({
+      returns: 100
+    })
+  }, [])
+
+  useEffect(() => {
+    // Some operations to get the data
+    setExchange2Data({
+      returns: 100
+    })
+  }, [])
+
+  useEffect(() => {
+    // Some operations to get the data
+    setTimeout(() => {
+      setBankData({
+        income: 100
+      })
+    }, 5000)
+  }, [])
+
+  const cryptoReturns = useMemo(() => {
+    console.log("Hi there before");
+    return exchange1Data.returns+exchange2Data.returns;
+  }, [exchange1Data, exchange2Data])
+
+  const incomeTax = (cryptoReturns + bankData.income) * 0.3;
 
   return (
     <>
-      <button onClick={addTodo}>Add ToDo</button>
-      {todos.map((todo) => (
-        <Todo key={todo.id} title={todo.title} desc={todo.desc} />
-      ))}
+      <p>Hi there your tax returns are {incomeTax}</p>
     </>
   );
 }
